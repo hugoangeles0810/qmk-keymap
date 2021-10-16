@@ -57,7 +57,7 @@ LCTL_T(KC_ESC),    KC_A,    KC_O,    KC_E,    KC_U,    KC_I,                    
   //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
       KC_BRMD, KC_BRMU, XXXXXXX, XXXXXXX, XXXXXXX,KC__VOLDOWN,                 KC__VOLUP, KC_MPRV, KC_MPLY, KC_MNXT, XXXXXXX, XXXXXXX,
   //|--------+--------+--------+--------+--------+--------+--------|  |--------+--------+--------+--------+--------+--------+--------|
-                                          KC_LGUI, _______,  KC_SPC,     KC_SPC,   MO(3), KC_RALT
+                                          KC_LGUI, _______,  KC_SPC,     KC_SPC,   MO(4), KC_RALT
                                       //`--------------------------'  `--------------------------'
   ),
 
@@ -74,6 +74,18 @@ LCTL_T(KC_ESC),    KC_A,    KC_O,    KC_E,    KC_U,    KC_I,                    
   ),
 
   [3] = LAYOUT_split_3x6_3(
+  //,-----------------------------------------------------.                    ,-----------------------------------------------------.
+      XXXXXXX, XXXXXXX,   KC_F1,   KC_F2,   KC_F3,   KC_F4,                      KC_PPLS,    KC_7,    KC_8,    KC_9, KC_MINS, KC_BSPC,
+  //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
+      XXXXXXX, XXXXXXX,   KC_F5,   KC_F6,   KC_F7,   KC_F8,                      KC_PAST,    KC_4,    KC_5,    KC_6, KC_SLSH, XXXXXXX,
+  //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
+      XXXXXXX, XXXXXXX,   KC_F9,  KC_F10,  KC_F11,  KC_F12,                         KC_0,    KC_1,    KC_2,    KC_3,  KC_DOT, XXXXXXX,
+  //|--------+--------+--------+--------+--------+--------+--------|  |--------+--------+--------+--------+--------+--------+--------|
+                                          KC_LGUI, _______,  KC_SPC,     KC_SPC, _______, KC_RALT
+                                      //`--------------------------'  `--------------------------'
+  ),
+
+  [4] = LAYOUT_split_3x6_3(
   //,-----------------------------------------------------.                    ,-----------------------------------------------------.
         RESET, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,                      XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,   RESET,
   //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
@@ -94,27 +106,32 @@ oled_rotation_t oled_init_user(oled_rotation_t rotation) {
   return rotation;
 }
 
-#define L_BASE 0
-#define L_LOWER 2
-#define L_RAISE 4
-#define L_ADJUST 8
+#define L_DVORAK 0
+#define L_NAVIGATION 2
+#define L_SYMBOLS 4
+#define L_NUMBERS 8
+#define L_ADJUST 16
 
 void oled_render_layer_state(void) {
     oled_write_P(PSTR("Layer: "), false);
     switch (layer_state) {
-        case L_BASE:
-            oled_write_ln_P(PSTR("Default"), false);
+        case L_DVORAK:
+            oled_write_ln_P(PSTR("Dvorak"), false);
             break;
-        case L_LOWER:
-            oled_write_ln_P(PSTR("Lower"), false);
+        case L_NAVIGATION:
+            oled_write_ln_P(PSTR("Navigation"), false);
             break;
-        case L_RAISE:
-            oled_write_ln_P(PSTR("Raise"), false);
+        case L_SYMBOLS:
+            oled_write_ln_P(PSTR("Symbols"), false);
+            break;
+        case L_NUMBERS:
+            oled_write_ln_P(PSTR("Numbers"), false);
             break;
         case L_ADJUST:
-        case L_ADJUST|L_LOWER:
-        case L_ADJUST|L_RAISE:
-        case L_ADJUST|L_LOWER|L_RAISE:
+        case L_ADJUST|L_NAVIGATION:
+        case L_ADJUST|L_SYMBOLS:
+        case L_ADJUST|L_NAVIGATION|L_SYMBOLS:
+        case L_ADJUST|L_NAVIGATION|L_SYMBOLS|L_NUMBERS:
             oled_write_ln_P(PSTR("Adjust"), false);
             break;
     }
